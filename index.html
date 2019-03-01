@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Aviation Weather Search</title>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Source Sans Pro" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet">
+		<link rel="shortcut icon" href=""><!--TODO: REMOVE AFTER ADDING AN ICON-->
+		<link rel="stylesheet" href="styles/main.css"/>
+	</head>
+	<body>
+		<div id="body">
+			<div class="search-content">
+				<div class="title">
+					<h1 class="title-content">Aviation Weather Search</h1>
+				</div>
+				<div class="input-group justify-content-center col-xs-4">
+					<div class="input-group-btn search-panel">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="dropbtn">
+							<span id="search_concept">METAR</span> <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li class="options"><a href="#metar" onclick="return false;">METAR</a></li>
+							<li class="options"><a href="#taf" onclick="return false;">TAF</a></li>
+						</ul>
+					</div>
+					<div class="search-input">
+						<input type="hidden" name="search_param" value="all" id="search_param">
+						<input type="text" class="form-control" id="main-input" placeholder="Enter ICATO code">
+					</div>
+					<span class="input-group-btn">
+						<button class="btn btn-default search-btn" id="searchbutton" type="button"><span class="search-icon"><i class="fas fa-search"></i></span></button>
+					</span>
+				</div>
+				<div class="weather-results">
+					<ul>
+						<li id="airportname" class="test left"></li>
+						<li id="timestamp" class="test left"></li>
+						<li id="temperature" class="test left"></li>
+						<li id="altimeter" class="test left"></li>
+						<li id="visibility" class="test left"></li>
+						<li id="flightrules" class="test left"></li>
+						<li id="winddir" class="test left"></li>
+						<li id="windgust" class="test right"></li>
+						<li id="windspeed" class="test right"></li>
+						<li id="dewpoint" class="test right"></li>
+						<li id="dewdecimal" class="test right"></li>
+						<li id="tempdecimal" class="test"></li>
+						<li id="forecast" class="test"></li>
+						<button id="showraw" class="btn rawbutton" style="display: none;"></button>
+						<div class="rawformat">
+							<li id="rawreport" class="test rawContent"></li>
+						</div>
+					</ul>
+				</div>
+			</div>
+			<div class="about">
+				<h2>About</h2>
+				<p class="about-content">Created using the wonderful open source <a href="https://avwx.rest/" class="info-links" target="_blank">AVWX API</a>. This project was <br>built with JavaScript and is fully open source, take a look at the code <a href="https://github.com/tim-steg" class="info-links" target="_blank">here</a>.</p>
+				<footer>Made with 💙 by <a href="https://tim-steg.github.io/" class="info-links" target="_blank">Tim Stegall</a></footer>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+		<script src="scripts/main.js"></script>
+	</body>
+</html>
