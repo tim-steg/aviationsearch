@@ -24,7 +24,7 @@ dropdownlist.forEach((event) => {
 //Fetches data from the AVWX API, based on the selected report type & airport, & returns the data in JSON format.
 const fetchInfo = async (airport) => {
 	try {
-		const api_call = await fetch(`http://avwx.rest/api/preview/${report_type}/${airport}?options=&format=json`, { mode: 'cors' });
+		const api_call = await fetch(`https://avwx.rest/api/preview/${report_type}/${airport}?options=&format=json`, { mode: 'cors' });
 		const data = await api_call.json();
 		return { data };
 	}
