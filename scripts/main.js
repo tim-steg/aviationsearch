@@ -40,7 +40,6 @@ const dataShow = () => {
 			/* Updates the appropriate HTML tags with the appropriate data.
 			   The if statements check if the JSON object length that we wish to print to the page is > 0,
 			   if it isn't then 'N/A' is printed instead. */
-			console.log(results);
 			airportName.innerHTML = `Airport: <span class="information">${results.data.station}</span>`;
 			timestamp.innerHTML = `Timestamp: <span class="information">${results.data.meta.timestamp}</span><br>`;
 			altimeter.innerHTML = `Altimeter: <span class="information">${results.data.altimeter.repr} inHg</span>`;
@@ -72,10 +71,21 @@ const dataShow = () => {
 		//Displays the data for TAF reports.
 	} else if (report_type == 'taf') {
 		fetchInfo(airportValue.value).then(results => {
-			console.log(results);
 			//Updates the appropriate HTML tags with the appropriate data.
 			airportName.innerHTML = `Airport: <span class="information">${results.data.station}</span>`;
-			timestamp.innerHTML = `Time: <span class="information">${results.data.time.dt}</span>`;
+			timestamp.innerHTML = `Timestamp: <span class="information">${results.data.meta.timestamp}</span>`;
+			temperature.innerHTML = `End Time: <span class="information">${results.data.end_time.dt}</span>`;
+			altimeter.innerHTML = `Forecast 1: <span class="information">${results.data.forecast['0'].raw}`;
+			visibility.innerHTML = `Forecast 2: <span class="information">${results.data.forecast['1'].raw}`;
+			flightRules.innerHTML = `Forecast 3: <span class="information">${results.data.forecast['2'].raw}`;
+			windDir.innerHTML = `Forecast 4: <span class="information">${results.data.forecast['3'].raw}`;
+			windGust.innerHTML = `Forecast 5: <span class="information">${results.data.forecast['4'].raw}`;
+			windSpeed.innerHTML = `<span class="information"></span><br>`;
+			dewpoint.innerHTML = `<span class="information"></span>`;
+			dewDecimal.innerHTML = `<span class="information"></span>`;
+			showRawReport.style.display = 'none';
+			showRawReport.innerHTML = `<span class="information"></span>`;
+			rawReport.innerHTML = '<span class="information"></span>';
 
 		});
 	}
