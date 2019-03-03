@@ -1,6 +1,6 @@
 # Aviation Search
 
-A responsive web appliciation that gives you weather data based on the inputted ICATO Airport Code. Created with Bootstrap, JavaScript, and HTML/CSS. Hosted online [here](google.com).
+A responsive web appliciation that gives you weather data based on the inputted ICATO Airport Code. Created with Bootstrap, JavaScript, and HTML/CSS. Hosted online [here](https://tim-steg.github.io/aviationsearch/).
 
 Example ICATO Codes: KHUF, KORD
 
