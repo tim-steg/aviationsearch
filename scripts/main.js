@@ -93,6 +93,5 @@ const dataShow = () => {
 
 //Sets up an event-listener that calls the dataShow function when the search button is clicked, displaying the data.
 searchButton.addEventListener('click', () => {
-	console.log('Button clicked!')
 	dataShow();
 });
