@@ -1,18 +1,12 @@
-//Various QuerySelectors and other DOM stuff for different HTML elements on the page.
-const airportValue = document.querySelector('#main-input'), searchButton = document.querySelector('#searchbutton');
-const rawReport = document.querySelector('#rawreport'), airportName = document.querySelector('#airportname');
-const altimeter = document.querySelector('#altimeter'), dewpoint = document.querySelector('#dewpoint');
-const flightRules = document.querySelector('#flightrules'), timestamp = document.querySelector('#timestamp');
-const dewDecimal = document.querySelector('#dewdecimal'), tempDecimal = document.querySelector('#tempdecimal');
-const visibility = document.querySelector('#visibility'), windDir = document.querySelector('#winddir');
-const windGust = document.querySelector('#windgust'), windSpeed = document.querySelector('#windspeed');
-const showRawReport = document.querySelector('#showraw'), dropdownlist = document.querySelectorAll('.dropdown-menu .options');
-const tempature = document.querySelector('#tempature'), dropbtn = document.querySelector('#dropbtn');
+// Various selectors and other DOM stuff for different HTML elements on the page.
+const airportValue = document.getElementById('main-input'), searchButton = document.getElementById('searchbutton');
+const dropdownlist = document.querySelectorAll('.dropdown-menu .options');
+const dropbtn = document.getElementById('dropbtn');
 
-//Sets the default report type as METAR.
+// Sets the report type as METAR (currently the only one supported, TAF to come in the future).
 let report_type = 'metar';
 
-//Replaces the dropdown with the selected report type, & sets the report_type variable accordingly.
+// Replaces the dropdown with the selected report type, & sets the report_type variable accordingly.
 dropdownlist.forEach((event) => {
 	//Adds an event listener for each link tag in the dropdown list.
 	event.addEventListener('click', () => {
@@ -21,10 +15,17 @@ dropdownlist.forEach((event) => {
 	});
 });
 
-//Fetches data from the AVWX API, based on the selected report type & airport, & returns the data in JSON format.
+// Fetches data from the AVWX API, based on the selected report type & airport, & returns the data in JSON format.
 const fetchInfo = async (airport) => {
 	try {
-		const api_call = await fetch(`https://avwx.rest/api/preview/${report_type}/${airport}?options=&format=json`, { mode: 'cors' });
+		const token = 'OelaG0zRE-mlEj6139ZSDFP5bW-to6J41fRoti8UYlU';
+		const api_call = await fetch(
+			`https://avwx.rest/api/${report_type}/${airport}?options=&airport=true&reporting=true&format=json&remove=&filter=&onfail=cache`, { 
+			mode: 'cors',
+			headers: {
+				Authorization: 'BEARER ' + token,
+			}
+		});
 		const data = await api_call.json();
 		return { data };
 	}
@@ -33,60 +34,52 @@ const fetchInfo = async (airport) => {
 	}
 };
 
+// List of data labels and their keys to grab from the results.
+const dataNames = [
+	{name: 'Airport', key: 'station'},
+	{name: 'Timestamp', key: 'time', subKey: 'dt'},
+	{name: 'Altimeter', key: 'altimeter', subKey: 'repr'},
+	{name: 'Temperature', key: 'temperature', subKey: 'repr'},
+	{name: 'Visibility', key: 'visibility', subKey: 'repr'},
+	{name: 'Flight Rules', key: 'flight_rules'},
+	{name: 'Wind Direction', key: 'wind_direction', subKey: 'repr'},
+	{name: 'Wind Gust', key: 'wind_gust', subKey: 'repr'},
+	{name: 'Wind Speed', key: 'wind_speed', subKey: 'value'},
+	{name: 'Dewpoint', key: 'dewpoint', subKey: 'repr'}
+];
+
+// Helper function to remove all the current tags/nodes with data.
+const removeAllChildNodes = (parent) => {
+	while (parent.firstChild) {
+		parent.removeChild(parent.firstChild);
+	}
+}
+
 const dataShow = () => {
 	if (report_type == 'metar') {
-		//Displays the data for METAR reports.
+		// Displays the data for METAR reports.
 		fetchInfo(airportValue.value).then(results => {
-			/* Updates the appropriate HTML tags with the appropriate data.
-			   The if statements check if the JSON object length that we wish to print to the page is > 0,
-			   if it isn't then 'N/A' is printed instead. */
-			airportName.innerHTML = `Airport: <span class="information">${results.data.station}</span>`;
-			timestamp.innerHTML = `Timestamp: <span class="information">${results.data.meta.timestamp}</span><br>`;
-			altimeter.innerHTML = `Altimeter: <span class="information">${results.data.altimeter.repr} inHg</span>`;
-			temperature.innerHTML = `Temperature: <span class="information">${results.data.temperature.repr}</span>`;
-			visibility.innerHTML = `Visibility: <span class="information">${results.data.visibility.repr} sm</span><br>`;
-			flightRules.innerHTML = `Flight Rules: <span class="information">${results.data.flight_rules}</span>`;
-			windDir.innerHTML = `Wind Direction: <span class="information">${results.data.wind_direction.repr}</span><br>`;
-			//Noticed that the wind_gust sometimes returns an empty value, so if that occurs then 'N/A' is printed instead.
-			if (results.data['wind_gust'] != null) {
-				windGust.innerHTML = `Wind Gust: <span class="information">${results.data.wind_gust.repr}</span>`;
-			} else {
-				windGust.innerHTML = 'Wind Gust: <span class="information">N/A</span>';
-			}
-			windSpeed.innerHTML = `Wind Speed: <span class="information">${results.data.wind_speed.repr} kt</span><br>`;
-			dewpoint.innerHTML = `Dewpoint: <span class="information">${results.data.dewpoint.repr}</span>`;
-			dewDecimal.innerHTML = `Dew Decimal: <span class="information">${results.data.remarks_info.dewpoint_decimal.repr}</span>`;
-			showRawReport.style.display = 'inline-block';
-			showRawReport.innerHTML = `Raw Report`;
-			rawReport.innerHTML = '';
-			// Shows raw report when button is clicked, and then hides it if clicked again.
-			showRawReport.addEventListener('click', () => {
-				if (rawReport.innerHTML == '') {
-					rawReport.innerHTML = `<span class="information">${results.data.raw}</span>`;
-				} else {
-					rawReport.innerHTML = '';
-				}
-			});
-		});
-		//Displays the data for TAF reports.
-	} else if (report_type == 'taf') {
-		fetchInfo(airportValue.value).then(results => {
-			//Updates the appropriate HTML tags with the appropriate data.
-			airportName.innerHTML = `Airport: <span class="information">${results.data.station}</span>`;
-			timestamp.innerHTML = `Timestamp: <span class="information">${results.data.meta.timestamp}</span>`;
-			temperature.innerHTML = `End Time: <span class="information">${results.data.end_time.dt}</span>`;
-			altimeter.innerHTML = `Forecast 1: <span class="information">${results.data.forecast['0'].raw}`;
-			visibility.innerHTML = `Forecast 2: <span class="information">${results.data.forecast['1'].raw}`;
-			flightRules.innerHTML = `Forecast 3: <span class="information">${results.data.forecast['2'].raw}`;
-			windDir.innerHTML = `Forecast 4: <span class="information">${results.data.forecast['3'].raw}`;
-			windGust.innerHTML = `Forecast 5: <span class="information">${results.data.forecast['4'].raw}`;
-			windSpeed.innerHTML = `<span class="information"></span><br>`;
-			dewpoint.innerHTML = `<span class="information"></span>`;
-			dewDecimal.innerHTML = `<span class="information"></span>`;
-			showRawReport.style.display = 'none';
-			showRawReport.innerHTML = `<span class="information"></span>`;
-			rawReport.innerHTML = '<span class="information"></span>';
+			// Creates new HTML tags and updates them with the appropriate data.
 
+			if (!results) {
+				return;
+			}
+
+			let ul = document.getElementById("results");
+			removeAllChildNodes(ul);
+		
+			for (const item of dataNames) {
+				if (results.data[item.key] === undefined || results.data[item.key] === null) {
+					continue;
+				}
+
+				let li = document.createElement("li");
+				li.className = "information";
+
+				const data = ('subKey' in item) ? results.data[item.key][item.subKey] : results.data[item.key];
+				li.innerHTML = item.name + `: ${data}`;
+				ul.append(li);
+			}
 		});
 	}
 };
