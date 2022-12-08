@@ -1,13 +1,11 @@
 # Aviation Search
 
-A web appliciation that gives you weather data based on the inputted ICATO Airport Code. Created with Bootstrap, JavaScript, and HTML/CSS. Hosted online [here](https://tim-steg.github.io/aviationsearch/).
+A web appliciation that gives you weather data based on the inputted ICAO Airport Code. Created with Bootstrap, JavaScript, and HTML/CSS. Hosted online [here](https://tim-steg.github.io/aviationsearch/).
 
-Example ICATO Codes: KHUF, KORD
+Example ICAO Codes: KHUF, KORD
 
-# Current Bugs
-
-'Raw Report' button does not work for the first attempt after clicking the search button a second time. Works again after clicking search again.
 
 # TODO
 
 Add responsiveness (currently no mobile version).
+Add TAF reports (currently only METAR is supported).

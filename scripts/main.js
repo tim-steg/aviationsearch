@@ -30,7 +30,7 @@ const fetchInfo = async (airport) => {
 		return { data };
 	}
 	catch (Error) {
-		alert('Error: Failed to fetch data, please input an appropriate ICATO airport code. (Example: KORD)');
+		alert('Error: Failed to fetch data, please input an appropriate ICAO airport code. (Example: KORD)');
 	}
 };
 
